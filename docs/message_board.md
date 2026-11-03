@@ -1,6 +1,5 @@
 # `message_board_scanner`
 
-
 Extracts the message board's journal from a multi-agent team run: who messaged whom, when, in reply to what, and which messages each agent received.
 
 **Works on:** team runs from the [`collaboration_index`](https://github.com/pabloRom2004/collaboration-index) harness, on any of its tasks. It reads that harness's own board records, so it does not work on other multi-agent harnesses.
