@@ -44,7 +44,7 @@ def replay_store(events: list[Any]) -> tuple[dict[str, Any], int, int]:
     return store, n_events, failures
 
 
-@scanner(events=["store"], version=2)
+@scanner(events=["store"], metadata=False, version=3)
 def communication_scanner() -> Scanner[Transcript]:
     async def scan(transcript: Transcript) -> Result:
         store, n_store, failures = replay_store(transcript.events)
@@ -62,7 +62,7 @@ def communication_scanner() -> Scanner[Transcript]:
                     "roster": out["roster"],
                     "events": out["events"],
                     "checks": out["checks"] | {"store_events": n_store, "patch_failures": failures},
-                    "scores": (transcript.metadata or {}).get("scores"),
+                    "score": transcript.score,
                 },
             )
         return Result(

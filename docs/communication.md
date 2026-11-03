@@ -10,7 +10,9 @@ Records are in the shape of Inspect's `CommunicationEvent`, the record [inspect_
 - `delivered`: `delivery.recipients` and `delivery.seq` (commit order).
 - `read`: `agent` is the reader. `record_ids` are the messages it was shown.
 
-Message text is not returned: `send.record.content` is `null`, and `data` holds `content_len` and `content_sha` (12-character SHA-256 prefix).
+Message text is not in the result: `send.record.content` is `null`, and `data` holds `content_len` and `content_sha` (12-character SHA-256 prefix).
+
+Scout also saves each scanner's input in the results file (the `input` column). Here that is the sample's store events, which include the board journal with message text. Scout's readers skip `input` by default; read only the columns you need rather than downloading the whole parquet.
 
 The result:
 
@@ -20,7 +22,7 @@ The result:
 - `metadata.roster`: every agent's id and chosen name
 - `metadata.events`: the `CommunicationEvent`s, in order
 - `metadata.checks`: counts for checking the conversion against the harness's own accounting
-- `metadata.scores`: the sample's scores
+- `metadata.score`: the sample's score
 
 ## Sources
 
