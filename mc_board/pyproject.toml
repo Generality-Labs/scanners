@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mc-board"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["inspect-ai", "inspect-scout", "jsonpatch"]
+
+[project.entry-points.inspect_ai]
+mc_board = "mc_board"
+
+[tool.setuptools.packages.find]
+include = ["mc_board*"]
