@@ -4,7 +4,7 @@
 
 | Scanner | What it does | LLM | Docs |
 |---|---|---|---|
-| `message_board_scanner` | Who messaged whom, and who received what, in multi-agent team runs | No | [docs/message_board.md](docs/message_board.md) |
+| `communication_scanner` | Who messaged whom, and who read what, in multi-agent runs, as Inspect `CommunicationEvent`s | No | [docs/communication.md](docs/communication.md) |
 
 ## Using on Hawk
 
@@ -12,10 +12,10 @@ Pin a release tag:
 
 ```yaml
 scanners:
-- package: git+https://github.com/Generality-Labs/scanners@v0.1.0
+- package: git+https://github.com/Generality-Labs/scanners@v0.2.0
   name: gl_scanners
   items:
-  - name: message_board_scanner
+  - name: communication_scanner
 ```
 
 ## Adding a scanner

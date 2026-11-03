@@ -1,3 +1,3 @@
-from gl_scanners.message_board import message_board_scanner
+from gl_scanners.communication import communication_scanner
 
-__all__ = ["message_board_scanner"]
+__all__ = ["communication_scanner"]
