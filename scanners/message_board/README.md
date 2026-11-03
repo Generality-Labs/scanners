@@ -1,6 +1,10 @@
 # message_board
 
-Extracts the message board's journal from a `collaboration_index` team run: who messaged whom, when, in reply to what, and which messages each agent received.
+Extracts the message board's journal from a multi-agent team run: who messaged whom, when, in reply to what, and which messages each agent received.
+
+## Works on
+
+Team runs from the `collaboration_index` harness (github.com/pabloRom2004/collaboration-index), on any of its tasks. It reads the harness's own board records, so it does not work on other multi-agent harnesses.
 
 ## What it measures
 
@@ -27,6 +31,6 @@ The harness exports the journal into the sample store inside the solver span, so
 
 ## Use
 
-Package `collab_message_board`, scanner `board_journal`. See [examples/example.scan.yaml](examples/example.scan.yaml).
+Package `message_board`, scanner `board_journal`. See [examples/example.scan.yaml](examples/example.scan.yaml).
 
 Test: `python tests/test_scanner.py`

@@ -3,7 +3,7 @@ sys.path.insert(0, sys.argv[1] if len(sys.argv) > 1 else __import__("os").path.d
 from inspect_ai.event import StoreEvent
 from inspect_ai._util.json import JsonChange
 from inspect_scout import Transcript
-from collab_message_board.scanner import board_journal
+from message_board.scanner import board_journal
 
 J = [
  {"run":"r","sequence":1,"actor":"a1","room":None,"kind":"register","data":{"name":"Ada"},"time":"t1"},

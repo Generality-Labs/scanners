@@ -1,8 +1,8 @@
-name: collab-message-board-example
+name: message-board-example
 max_processes: 1
 scanners:
-- package: git+https://github.com/Generality-Labs/scanners@<SHA>#subdirectory=scanners/collaboration_index/message_board
-  name: collab_message_board
+- package: git+https://github.com/Generality-Labs/scanners@<SHA>#subdirectory=scanners/message_board
+  name: message_board
   items:
   - name: board_journal
 transcripts:

@@ -3,13 +3,13 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gl-scanners-collab-message-board"
+name = "gl-scanners-message-board"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = ["inspect-ai", "inspect-scout", "jsonpatch"]
 
 [project.entry-points.inspect_ai]
-collab_message_board = "collab_message_board"
+message_board = "message_board"
 
 [tool.setuptools.packages.find]
-include = ["collab_message_board*"]
+include = ["message_board*"]

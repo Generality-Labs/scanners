@@ -4,38 +4,36 @@
 
 ## Layout
 
+Each scanner is its own folder under `scanners/`, installable on its own:
+
 ```
-scanners/
-  <group>/              the eval, harness or theme the scanners target
-    README.md           what the group covers
-    <scanner>/          one installable package per scanner
-      README.md         what it measures, how, output, whether it uses an LLM
-      pyproject.toml
-      <package>/        code
-      tests/
-      examples/         example Hawk scan config
+scanners/<scanner>/
+  README.md               what it measures, what it works on, how, output, use
+  pyproject.toml          package metadata and dependencies
+  <scanner>/__init__.py   exports the scanner
+  <scanner>/scanner.py    the scanner
+  tests/test_scanner.py   runs on synthetic input, no real logs needed
+  examples/example.scan.yaml   Hawk scan config
 ```
 
 ## Scanners
 
-| Group | Scanner | What it does | LLM |
+| Scanner | What it does | Works on | LLM |
 |---|---|---|---|
-| [collaboration_index](scanners/collaboration_index/) | [message_board](scanners/collaboration_index/message_board/) | Extracts who messaged whom, and who received what, from multi-agent team runs | No |
+| [message_board](scanners/message_board/) | Extracts who messaged whom, and who received what | `collaboration_index` team runs | No |
 
 ## Running a scanner on Hawk
 
-Pin the scanner by commit SHA and subdirectory:
+Pin it by commit SHA and subdirectory:
 
 ```yaml
 scanners:
-- package: git+https://github.com/Generality-Labs/scanners@<SHA>#subdirectory=scanners/<group>/<scanner>
-  name: <package>
+- package: git+https://github.com/Generality-Labs/scanners@<SHA>#subdirectory=scanners/<scanner>
+  name: <scanner>
   items:
   - name: <scanner function>
 ```
 
-Each scanner's `examples/` has a full config.
-
 ## Adding a scanner
 
-Put it in the group it belongs to (or start a new group with its own README), copy the README sections of an existing scanner, add a test that runs without real logs, and add a row to the table above.
+Copy the layout above, keep the README sections, make the test run without real logs, and add a row to the table.
