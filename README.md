@@ -12,7 +12,7 @@ Pin a release tag:
 
 ```yaml
 scanners:
-- package: git+https://github.com/Generality-Labs/scanners@v0.2.1
+- package: git+https://github.com/Generality-Labs/scanners@v0.2.2
   name: gl_scanners
   items:
   - name: communication_scanner

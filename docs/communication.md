@@ -32,11 +32,11 @@ Team runs from the [collaboration_index](https://github.com/pabloRom2004/collabo
 
 - Each message becomes `sent` and `delivered`, both at the message's time, since the board commits and publishes a message in one step.
 - Global posts are addressed to `all` and reach every other agent on the team. DMs reach the other member of the room.
-- Each read becomes `read`, listing the messages returned to that agent for the first time. Being returned by a read does not show the agent acted on a message.
+- Each read becomes `read`, listing the messages returned to that agent for the first time. The board also returns the reader's own posts; those are dropped, as inspect_swarm never shows a member its own messages, and counted in `checks.self_deliveries_dropped`. Being returned by a read does not show the agent acted on a message.
 
 The journal does not record refused sends, waits, or reads that returned nothing new, so those are absent.
 
-`checks.sent` should equal `checks.completed_send_calls`, the harness's own count of successful sends.
+`checks.sent` should equal `checks.completed_send_calls`, and `checks.sent_global` should equal `checks.completed_global_send_calls`: the harness's own records of successful sends.
 
 ### inspect_swarm (not yet)
 

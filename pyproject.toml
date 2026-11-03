@@ -1,6 +1,6 @@
 [project]
 name = "gl-scanners"
-version = "0.2.1"
+version = "0.2.2"
 description = "Generality Labs scanners for Inspect Scout"
 readme = "README.md"
 license = "MIT"

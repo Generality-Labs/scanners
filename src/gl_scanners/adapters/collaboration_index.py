@@ -7,7 +7,8 @@ the record inspect_swarm writes natively:
 
 - a `message` row becomes a `sent` event and a `delivered` event. The board commits a
   message and makes it visible in one transaction, so both carry the message's time.
-- a `read` row (messages returned to an agent for the first time) becomes a `read` event.
+- a `read` row (messages returned to an agent for the first time) becomes a `read` event,
+  minus the agent's own posts, which the board also returns.
 - `register` names go to the roster; DM rooms resolve to their two members via the
   room's `create` row; global posts go to every other agent on the roster.
 
@@ -40,8 +41,10 @@ def convert(store: dict[str, Any]) -> dict[str, Any] | None:
         if e["kind"] == "create" and (e.get("data") or {}).get("kind") == "dm"
     }
 
+    senders = {e["sequence"]: e["actor"] for e in journal if e["kind"] == "message"}
     events: list[dict[str, Any]] = []
     unresolved_dm = 0
+    self_deliveries = 0
     for e in journal:
         data = e.get("data") or {}
         base = {
@@ -101,24 +104,37 @@ def convert(store: dict[str, Any]) -> dict[str, Any] | None:
                 }
             )
         elif e["kind"] == "read":
-            events.append(
-                base
-                | {
-                    "kind": "read",
-                    "record_ids": [_record_id(s) for s in data.get("delivered") or []],
-                    "data": {"room": e["room"], "sequence": e["sequence"]},
-                }
-            )
+            # the board returns the reader's own posts too; inspect_swarm never shows
+            # a member its own messages, so drop them (and count them in checks)
+            delivered = data.get("delivered") or []
+            own = [s for s in delivered if senders.get(s) == e["actor"]]
+            self_deliveries += len(own)
+            shown = [s for s in delivered if senders.get(s) != e["actor"]]
+            if shown:
+                events.append(
+                    base
+                    | {
+                        "kind": "read",
+                        "record_ids": [_record_id(s) for s in shown],
+                        "data": {"room": e["room"], "sequence": e["sequence"]},
+                    }
+                )
 
     calls = store.get("BoardHistory:calls") or []
-    completed_sends = sum(1 for c in calls if c.get("completed") and c.get("action") == "send")
+    sends = [c for c in calls if c.get("completed") and c.get("action") == "send"]
+    global_sends = sum(1 for c in sends if (c.get("result") or {}).get("room") == "global")
     return {
         "roster": [{"id": a, "name": names.get(a)} for a in actors],
         "events": events,
         "checks": {
             "journal_rows": len(journal),
             "sent": sum(ev["kind"] == "sent" for ev in events),
-            "completed_send_calls": completed_sends,
+            "sent_global": sum(
+                ev["kind"] == "sent" and ev["data"]["room"] == "global" for ev in events
+            ),
+            "completed_send_calls": len(sends),
+            "completed_global_send_calls": global_sends,
             "unresolved_dm_rooms": unresolved_dm,
+            "self_deliveries_dropped": self_deliveries,
         },
     }
