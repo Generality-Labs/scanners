@@ -70,7 +70,7 @@ def compact(entry: dict[str, Any]) -> dict[str, Any]:
 
 
 @scanner(events=["store"], version=1)
-def board_journal() -> Scanner[Transcript]:
+def message_board_scanner() -> Scanner[Transcript]:
     async def scan(transcript: Transcript) -> Result:
         store, n_store = replay_store(transcript.events)
         journal = store.get("BoardHistory:journal")

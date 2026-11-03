@@ -1,9 +1,9 @@
 import asyncio, sys
-sys.path.insert(0, sys.argv[1] if len(sys.argv) > 1 else __import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))))
+sys.path.insert(0, __import__("os").path.join(__import__("os").path.dirname(__import__("os").path.dirname(__import__("os").path.abspath(__file__))), "src"))
 from inspect_ai.event import StoreEvent
 from inspect_ai._util.json import JsonChange
 from inspect_scout import Transcript
-from message_board.scanner import board_journal
+from gl_scanners.message_board import message_board_scanner
 
 J = [
  {"run":"r","sequence":1,"actor":"a1","room":None,"kind":"register","data":{"name":"Ada"},"time":"t1"},
@@ -18,8 +18,8 @@ evs = [
                      JsonChange(op="add", path="/BoardHistory:journal", value=J)]),
 ]
 t = Transcript(transcript_id="t", source_type="eval_log", source_id="s", source_uri="u", metadata={}, events=evs)
-r = asyncio.run(board_journal()(t))
+r = asyncio.run(message_board_scanner()(t))
 print(r.answer, r.value, r.explanation)
 print(r.metadata["journal"]); print(r.metadata["peers"], r.metadata["completed_send_calls"], r.metadata["patch_failures"])
 t2 = Transcript(transcript_id="t", source_type="eval_log", source_id="s", source_uri="u", metadata={}, events=evs[:1])
-r2 = asyncio.run(board_journal()(t2)); print(r2.answer, r2.explanation)
+r2 = asyncio.run(message_board_scanner()(t2)); print(r2.answer, r2.explanation)

@@ -1,0 +1,16 @@
+[project]
+name = "gl-scanners"
+version = "0.1.0"
+description = "Generality Labs scanners for Inspect Scout"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.12"
+dependencies = ["inspect-ai", "inspect-scout", "jsonpatch"]
+
+[project.entry-points.inspect_ai]
+gl_scanners = "gl_scanners._registry"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
