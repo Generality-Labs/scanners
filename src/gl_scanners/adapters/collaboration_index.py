@@ -13,7 +13,7 @@ the record inspect_swarm writes natively:
   room's `create` row; global posts go to every other agent on the roster.
 
 Not recorded by the journal, so absent here: refused sends, waits, and reads that
-returned nothing new. Message text is replaced by its length and a hash.
+returned nothing new. Message text is replaced by its length and a hash unless include_text.
 """
 
 import hashlib
@@ -27,8 +27,11 @@ def _record_id(sequence: int) -> str:
     return f"m-{sequence}"
 
 
-def convert(store: dict[str, Any]) -> dict[str, Any] | None:
-    """Return {"roster", "events", "checks"}, or None if the store has no board journal."""
+def convert(store: dict[str, Any], include_text: bool = False) -> dict[str, Any] | None:
+    """Return {"roster", "events", "checks"}, or None if the store has no board journal.
+
+    With include_text, each `sent` record carries the message text in `content`.
+    """
     journal = store.get("BoardHistory:journal")
     if journal is None:
         return None
@@ -86,7 +89,7 @@ def convert(store: dict[str, Any]) -> dict[str, Any] | None:
                             "sender": e["actor"],
                             "to": to,
                             "recipients": recipients,
-                            "content": None,
+                            "content": text if include_text else None,
                             "reply_to": _record_id(reply_to) if reply_to is not None else None,
                         },
                         "rejected": None,

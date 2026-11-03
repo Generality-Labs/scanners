@@ -5,6 +5,7 @@
 | Scanner | What it does | LLM | Docs |
 |---|---|---|---|
 | `communication_scanner` | Who messaged whom, and who read what, in multi-agent runs, as Inspect `CommunicationEvent`s | No | [docs/communication.md](docs/communication.md) |
+| `activity_scanner` | Each agent's model calls: output and reasoning tokens, and the tool calls they made | No | [docs/activity.md](docs/activity.md) |
 
 ## Using on Hawk
 
@@ -12,7 +13,7 @@ Pin a release tag:
 
 ```yaml
 scanners:
-- package: git+https://github.com/Generality-Labs/scanners@v0.2.3
+- package: git+https://github.com/Generality-Labs/scanners@v0.3.0
   name: gl_scanners
   items:
   - name: communication_scanner
@@ -31,6 +32,7 @@ uv venv .venv-hawk && uv pip install --python .venv-hawk/bin/python jsonpatch \
   "inspect-ai @ git+https://github.com/METR/inspect_ai.git@<sha>" \
   "inspect-scout @ git+https://github.com/METR/inspect_scout.git@<sha>"
 .venv-hawk/bin/python tests/test_communication.py
+.venv-hawk/bin/python tests/test_activity.py
 ```
 
 ## Releasing

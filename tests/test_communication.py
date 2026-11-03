@@ -56,6 +56,10 @@ def main() -> None:
     assert m["checks"]["sent_global"] == m["checks"]["completed_global_send_calls"] == 1
     assert m["checks"]["unresolved_dm_rooms"] == 0 and m["checks"]["patch_failures"] == 0
 
+    r3 = asyncio.run(communication_scanner(include_text=True)(transcript(STORE)))
+    assert r3.metadata["events"][0]["send"]["record"]["content"] == "I'll take the parser"
+    assert evs[0]["send"]["record"]["content"] is None
+
     r2 = asyncio.run(communication_scanner()(transcript(STORE[:1])))
     assert r2.answer == "no_records"
 

@@ -45,11 +45,12 @@ def replay_store(events: list[Any]) -> tuple[dict[str, Any], int, int]:
 
 
 @scanner(events=["store"], version=5)
-def communication_scanner() -> Scanner[Transcript]:
+def communication_scanner(include_text: bool = False) -> Scanner[Transcript]:
+    """include_text: keep message text in `send.record.content` (off by default)."""
     async def scan(transcript: Transcript) -> Result:
         store, n_store, failures = replay_store(transcript.events)
         for adapter in ADAPTERS:
-            out = adapter.convert(store)
+            out = adapter.convert(store, include_text=include_text)
             if out is None:
                 continue
             sent = out["checks"]["sent"]
