@@ -44,7 +44,7 @@ def replay_store(events: list[Any]) -> tuple[dict[str, Any], int, int]:
     return store, n_events, failures
 
 
-@scanner(events=["store"], metadata=False, version=4)
+@scanner(events=["store"], version=5)
 def communication_scanner() -> Scanner[Transcript]:
     async def scan(transcript: Transcript) -> Result:
         store, n_store, failures = replay_store(transcript.events)

@@ -12,7 +12,7 @@ Pin a release tag:
 
 ```yaml
 scanners:
-- package: git+https://github.com/Generality-Labs/scanners@v0.2.2
+- package: git+https://github.com/Generality-Labs/scanners@v0.2.3
   name: gl_scanners
   items:
   - name: communication_scanner
@@ -21,6 +21,17 @@ scanners:
 ## Adding a scanner
 
 Add `src/gl_scanners/<name>.py`, export it from `_registry.py`, write `docs/<name>.md`, add a row to the table above and a test in `tests/` that runs on synthetic transcripts.
+
+## Testing
+
+Hawk's runner uses METR's forks of Inspect and Scout, which can be older than PyPI. Run the tests against the versions the runner installs (its log prints them), not just the latest:
+
+```bash
+uv venv .venv-hawk && uv pip install --python .venv-hawk/bin/python jsonpatch \
+  "inspect-ai @ git+https://github.com/METR/inspect_ai.git@<sha>" \
+  "inspect-scout @ git+https://github.com/METR/inspect_scout.git@<sha>"
+.venv-hawk/bin/python tests/test_communication.py
+```
 
 ## Releasing
 
